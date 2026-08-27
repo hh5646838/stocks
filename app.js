@@ -97,11 +97,11 @@ function initDefaultData() {
   $('privacyToggle').checked = true;
 
   STATE.stocks = [
-    { name: '贵州茅台 600519', holding: 30000, target: 40000 },
-    { name: '宁德时代 300750', holding: 20000, target: 25000 },
-    { name: '比亚迪 002594',   holding: 15000, target: 20000 },
-    { name: '中国平安 601318', holding: 10000, target: 10000 },
-    { name: '招商银行 600036', holding: 8000,  target: 5000  }
+    { name: '✦🍎 幻想科技', holding: 30000, target: 40000 },
+    { name: '◆🚀 星辰动力', holding: 20000, target: 25000 },
+    { name: '▲💎 水晶矿业', holding: 15000, target: 20000 },
+    { name: '●🌙 月光能源', holding: 10000, target: 10000 },
+    { name: '★🦄 独角兽生物', holding: 8000,  target: 5000  }
   ];
   renderStockList();
 }
