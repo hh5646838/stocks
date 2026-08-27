@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>极简持仓比例估算与调仓计划长图生成器</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body>
+
+  <!-- 顶部导航栏 -->
+  <header class="top-nav">
+    <div class="nav-left">
+      <h1 class="site-title">📊 持仓比例估算器</h1>
+    </div>
+    <div class="nav-right" id="authorArea">
+      <img id="navAvatar" src="" alt="avatar" class="nav-avatar">
+      <span id="navAuthorName" class="nav-author-name"></span>
+      <button class="follow-btn" id="followBtn">+ 关注我</button>
+    </div>
+  </header>
+
+  <!-- 主体容器 -->
+  <main class="main-container">
+    <!-- 左侧：表单输入区 -->
+    <section class="form-panel">
+      <div class="form-section">
+        <h2 class="section-title">🌐 市场与货币设置</h2>
+        <div class="form-row">
+          <label class="form-label">市场选择 <span class="required">*</span></label>
+          <div class="custom-dropdown" id="marketDropdown">
+            <div class="datalist-wrap">
+              <input type="text" id="marketSelect" placeholder="选择或输入市场" value="A股" autocomplete="off" readonly>
+              <span class="datalist-arrow"></span>
+            </div>
+            <ul class="dropdown-menu">
+              <li data-value="A股">A股</li>
+              <li data-value="港股">港股</li>
+              <li data-value="美股">美股</li>
+              <li data-value="日股">日股</li>
+              <li data-value="韩股">韩股</li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">货币单位 <span class="required">*</span></label>
+          <div class="custom-dropdown" id="currencyDropdown">
+            <div class="datalist-wrap">
+              <input type="text" id="currencyInput" placeholder="选择或输入货币符号" value="¥" autocomplete="off" readonly>
+              <span class="datalist-arrow"></span>
+            </div>
+            <ul class="dropdown-menu">
+              <li data-value="¥">¥</li>
+              <li data-value="HK$">HK$</li>
+              <li data-value="$">$</li>
+              <li data-value="₩">₩</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-title">📅 基础设置</h2>
+        <div class="form-row">
+          <label class="form-label">日期 <span class="required">*</span></label>
+          <div class="date-inputs">
+            <select id="yearInput"></select>
+            <span class="date-sep">/</span>
+            <select id="monthInput">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+            <span class="date-sep">/</span>
+            <input type="number" id="dayInput" placeholder="日(可选)" min="1" max="31">
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">今日状态</label>
+          <select id="moodSelect">
+            <option value="">无</option>
+            <option value="🍜 今日吃面">🍜 今日吃面</option>
+            <option value="📈 继续格局">📈 继续格局</option>
+            <option value="🚀 满仓梭哈">🚀 满仓梭哈</option>
+            <option value="🛡️ 稳健防守">🛡️ 稳健防守</option>
+            <option value="💎 价值投资">💎 价值投资</option>
+            <option value="🔥 强势做多">🔥 强势做多</option>
+            <option value="❄️ 空仓观望">❄️ 空仓观望</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-title">💼 基础资产</h2>
+        <div class="form-row">
+          <label class="form-label">现金 <span class="required">*</span></label>
+          <input type="number" id="cashInput" placeholder="请输入现金金额" min="0" step="0.01">
+          <p class="field-hint">* 现金为必填项，满仓请填 0</p>
+        </div>
+        <div class="form-row">
+          <label class="form-label">黄金</label>
+          <input type="number" id="goldInput" placeholder="可选，默认0" min="0" step="0.01" value="0">
+        </div>
+        <div class="form-row">
+          <label class="form-label">大饼（BTC）</label>
+          <input type="number" id="btcInput" placeholder="可选，默认0" min="0" step="0.01" value="0">
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-title">📋 股票持仓</h2>
+        <div class="stock-header">
+          <span>股票代码/名称</span>
+          <span>持仓金额</span>
+          <span>计划持仓</span>
+          <span class="stock-header-action">操作</span>
+        </div>
+        <div id="stockList" class="stock-list"></div>
+        <button class="add-stock-btn" id="addStockBtn">+ 添加股票</button>
+      </div>
+
+      <div class="form-section action-section">
+        <label class="privacy-label">
+          <input type="checkbox" id="privacyToggle" checked>
+          <span>隐去具体金额（仅显示比例）</span>
+        </label>
+        <label class="privacy-label">
+          <input type="checkbox" id="doughnutLabelToggle" checked>
+          <span>圆环标注百分比</span>
+        </label>
+        <button class="generate-btn" id="generateBtn">📥 生成并下载高清长图</button>
+      </div>
+    </section>
+
+    <!-- 右侧：实时预览区 -->
+    <section class="preview-panel">
+      <div class="preview-wrapper">
+        <div class="preview-card" id="previewCard">
+          <!-- 预览内容由 JS 动态渲染 -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 关注我 模态框 -->
+  <div class="modal-overlay" id="followModal">
+    <div class="modal-box">
+      <button class="modal-close" id="followModalClose">×</button>
+      <div class="modal-content">
+        <h3 class="modal-title">扫码关注公众号</h3>
+        <img id="modalQrImg" src="" alt="公众号二维码" class="modal-qr">
+        <p class="modal-wechat-name" id="modalWechatName"></p>
+        <button class="copy-btn" id="copyWechatBtn">📋 一键复制公众号名称</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 计划持仓未填满 确认弹窗 -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-box modal-small">
+      <div class="modal-content">
+        <p class="confirm-text" id="confirmText"></p>
+        <div class="confirm-btns">
+          <button class="confirm-btn secondary" id="confirmContinueFill">继续填写</button>
+          <button class="confirm-btn primary" id="confirmContinueGen">继续生成</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 猫咪泪眼 广告弹窗 -->
+  <div class="modal-overlay" id="adModal">
+    <div class="modal-box modal-ad">
+      <button class="modal-close" id="adModalClose">×</button>
+      <div class="modal-content">
+        <div class="cat-emoji">🐱 🥺</div>
+        <p class="ad-text">阅读广告是网站维持的根本，微信扫描下方二维码阅读并点击文末的广告支持我们吧！当然,你也可以选择残忍关掉弹窗继续免费使用。</p>
+        <img id="adQrImg" src="" alt="支持二维码" class="modal-qr">
+        <button class="ad-close-btn" id="adCloseBtn" disabled>已知晓，继续使用 (<span id="adCountdown">5</span>s)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 提示 -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
