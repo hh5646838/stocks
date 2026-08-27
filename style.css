@@ -97,6 +97,29 @@ html, body {
   background: var(--accent-hover);
 }
 
+.help-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.4);
+  background: transparent;
+  color: #e2e8f0;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.help-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(37,99,235,0.1);
+}
+
 /* ===== 主体布局 ===== */
 .main-container {
   display: flex;
@@ -934,6 +957,89 @@ html, body {
 .ad-close-btn:disabled {
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+/* 声明弹窗 */
+.modal-disclaimer {
+  max-width: 420px;
+}
+
+.disclaimer-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.disclaimer-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 20px;
+  text-align: left;
+  padding: 0 8px;
+}
+
+.disclaimer-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+  cursor: pointer;
+  margin-bottom: 16px;
+  user-select: none;
+}
+
+.disclaimer-check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.disclaimer-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  background: #94a3b8;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.disclaimer-btn:not(:disabled) {
+  background: var(--accent);
+  cursor: pointer;
+}
+
+.disclaimer-btn:not(:disabled):hover {
+  background: var(--accent-hover);
+}
+
+.disclaimer-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* 帮助内容 */
+.help-content {
+  text-align: left;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.help-content p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.help-content strong {
+  color: var(--text-primary);
 }
 
 /* ===== Toast ===== */

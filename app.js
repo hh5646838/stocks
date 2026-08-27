@@ -628,6 +628,23 @@ function bindEvents() {
     $('adModal').classList.remove('active');
   });
 
+  // 声明弹窗
+  $('disclaimerCheck').addEventListener('change', (e) => {
+    $('disclaimerBtn').disabled = !e.target.checked;
+  });
+  $('disclaimerBtn').addEventListener('click', () => {
+    $('disclaimerModal').classList.remove('active');
+  });
+
+  // 帮助弹窗
+  $('helpBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    $('helpModal').classList.add('active');
+  });
+  $('helpModalClose').addEventListener('click', () => {
+    $('helpModal').classList.remove('active');
+  });
+
   // 点击遮罩关闭（关注弹窗不允许点遮罩关闭，只能点×）
   $('followModal').addEventListener('click', (e) => {
     if (e.target.id === 'followModal') {
@@ -642,6 +659,9 @@ async function init() {
   initDefaultData();
   bindEvents();
   renderPreview();
+
+  // 每次打开都弹出使用声明
+  $('disclaimerModal').classList.add('active');
 }
 
 document.addEventListener('DOMContentLoaded', init);
