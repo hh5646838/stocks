@@ -604,6 +604,20 @@ function bindEvents() {
   // 添加股票
   $('addStockBtn').addEventListener('click', addStock);
 
+  // 一键清空股票
+  $('clearStockBtn').addEventListener('click', () => {
+    if (STATE.stocks.length === 0) {
+      showToast('暂无股票可清空', 1500);
+      return;
+    }
+    if (confirm('确定要清空所有股票持仓吗？此操作不可撤销。')) {
+      STATE.stocks = [];
+      renderStockList();
+      renderPreview();
+      showToast('已清空所有股票', 1500);
+    }
+  });
+
   // 生成按钮
   $('generateBtn').addEventListener('click', generateImage);
 
