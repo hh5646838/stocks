@@ -57,6 +57,7 @@ async function loadConfig() {
       homepage: '#',
       wechatName: '持仓估算君',
       wechatQrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=#',
+      moreToolsUrl: 'https://jojocharm.top',
       adPopup: { firstTriggerCount: 6, intervalCount: 3, countdownSeconds: 5 }
     };
   }
@@ -70,6 +71,14 @@ function renderConfig() {
   $('modalQrImg').src = c.wechatQrUrl;
   $('modalWechatName').textContent = c.wechatName;
   $('adQrImg').src = c.wechatQrUrl;
+
+  // 更多工具链接
+  const toolsLink = $('toolsLink');
+  if (c.moreToolsUrl) {
+    toolsLink.href = c.moreToolsUrl;
+  } else {
+    toolsLink.style.display = 'none';
+  }
 }
 
 // ---------- 默认初始数据 ----------
