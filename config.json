@@ -1,8 +1,8 @@
 {
   "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=stockmaster&backgroundColor=b6e3f4",
-  "authorName": "持仓估算君",
-  "homepage": "https://example.com",
-  "wechatName": "持仓估算君",
+  "authorName": "JoJo的持仓比例估算",
+  "homepage": "https://jojocharm.top",
+  "wechatName": "JoJo的AI世界",
   "wechatQrUrl": "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://mp.weixin.qq.com",
   "adPopup": {
     "firstTriggerCount": 6,
